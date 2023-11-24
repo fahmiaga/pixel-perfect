@@ -37,8 +37,8 @@ const Main = () => {
         <div className="w-3/4 h-screen border-l-2 border-mediumGray">
           <Search />
           <div className="absolute bottom-1 right-1 flex items-center justify-end gap-6 mr-2 mb-9 w-full">
-            <Button text='Task' icon={NewTask} color="lightBlue" content={<Task />} chatType="Task" isOpen={isTaskOpen} toggleChatBox={toggleChatBox} />
-            <Button text='Inbox' icon={NewMessage} color="primaryWhite" content={<Message />} chatType="Message" isOpen={isMessageOpen} toggleChatBox={toggleChatBox} />
+            <Button text='Task' icon={NewTask} color="bg-lightBlue" content={<Task />} chatType="Task" isOpen={isTaskOpen} toggleChatBox={toggleChatBox} />
+            <Button text='Inbox' icon={NewMessage} color="bg-primaryWhite" content={<Message />} chatType="Message" isOpen={isMessageOpen} toggleChatBox={toggleChatBox} />
           </div>
         </div>
       </div>

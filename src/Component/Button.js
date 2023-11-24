@@ -12,7 +12,7 @@ const Button = ({ text, icon, color, content, chatType, isOpen, toggleChatBox })
         <p className="text-white">
           {text}
         </p>
-        <button className={`text-white flex justify-center items-center w-16 h-16 rounded-full bg-${color} relative  ${isOpen ? 'after:-z-50 after:absolute after:w-16 after:h-16 after:bg-mediumGray after:-bottom-0 after:right-2 after:rounded-full' : ''}  `} onClick={handleClick}>
+        <button className={`text-white flex justify-center items-center w-16 h-16 rounded-full ${color} relative  ${isOpen ? 'after:-z-50 after:absolute after:w-16 after:h-16 after:bg-mediumGray after:-bottom-0 after:right-2 after:rounded-full' : ''}  `} onClick={handleClick}>
           <div>
             {icon}
           </div>
