@@ -8,6 +8,7 @@ import Loading from "./../assets/images/loading.gif";
 const Message = () => {
   const [chatData, setChatData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [filteredChatData, setFilteredChatData] = useState(null);
 
   useEffect(() => {
     const fetchDataAndSetState = async () => {
@@ -17,6 +18,7 @@ const Message = () => {
 
           if (data) {
             setChatData(data);
+            setFilteredChatData(data);
           }
           setIsLoading(false);
         }, 1000);
@@ -31,19 +33,37 @@ const Message = () => {
 
     fetchDataAndSetState();
   }, []);
+
+  const filterChats = (searchTerm) => {
+    if (!searchTerm) {
+      setFilteredChatData(chatData);
+    } else {
+      const filteredChats = chatData.filter((chat) =>
+        chat.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredChatData(filteredChats);
+    }
+  };
+
   return (
     <>
-      <ChatboxSearch />
-      {!isLoading && chatData.map((data) => (
-        <ChartCard key={data.title} data={data} />
-      ))}
-      {isLoading && <div>
-
-        <div className="flex flex-col items-center justify-center mt-40">
-          <img src={Loading} alt="loading" className="w-10 h-10" />
-          <p>Loading Chats ...</p>
+      <ChatboxSearch onSearch={filterChats} />
+      {!isLoading &&
+        (filteredChatData ? (
+          filteredChatData.map((data) => (
+            <ChartCard key={data.title} data={data} />
+          ))
+        ) : (
+          <p>No matching chats found.</p>
+        ))}
+      {isLoading && (
+        <div>
+          <div className="flex flex-col items-center justify-center mt-40">
+            <img src={Loading} alt="loading" className="w-10 h-10" />
+            <p>Loading Chats ...</p>
+          </div>
         </div>
-      </div>}
+      )}
     </>
   );
 }
