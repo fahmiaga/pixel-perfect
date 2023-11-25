@@ -9,7 +9,10 @@ module.exports = {
         mediumGray: '#828282',
         primaryBlue: '#2f80ed',
         lightBlue: '#8785ff',
-        primaryWhite: '#e0e0e0'
+        primaryWhite: '#e0e0e0',
+        lightGray: '##C4C4C4',
+        lightRed: '#F9E0FD',
+        lightPurple: '#EEDCFF'
       }
     },
   },
