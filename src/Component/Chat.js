@@ -69,17 +69,18 @@ const Chat = ({ data, onClose }) => {
     }
   };
 
-  // const handleDelete = (messageId) => {
-  //   const updatedChatData = { ...chatData };
-  //   const messageIndex = updatedChatData.messages.findIndex(message => message.id === messageId);
+  const handleDelete = (messageId) => {
+    console.log('>>>>', messageId)
+    const updatedChatData = { ...chatData };
+    const messageIndex = updatedChatData.messages.findIndex(message => message.date === messageId);
 
-  //   if (messageIndex !== -1) {
-  //     updatedChatData.messages[messageIndex].message = '';
-  //     setChatData(updatedChatData);
+    if (messageIndex !== -1) {
+      updatedChatData.messages[messageIndex].message = '';
+      setChatData(updatedChatData);
 
-  //     localStorage.setItem(`chatData_${updatedChatData.id}`, JSON.stringify(updatedChatData));
-  //   }
-  // };
+      localStorage.setItem(`chatData_${updatedChatData.id}`, JSON.stringify(updatedChatData));
+    }
+  };
 
   return (
     <>
@@ -126,9 +127,9 @@ const Chat = ({ data, onClose }) => {
                     {message.sender.id === loggedInUser.id ? 'You' : message.sender.first_name}
                   </h6>
                   <div className="flex gap-1">
-                    {message.sender.id === loggedInUser.id ? '<Menu onDelete={handleDelete} />' : ''}
+                    {message.sender.id === loggedInUser.id ? <Menu messageId={message.date} onDelete={handleDelete} /> : ''}
                     <div className={`w-full p-2 rounded-md ${message.sender.id === loggedInUser.id ? 'bg-lightRed' : 'bg-primaryWhite'} `}>
-                      {message.message}
+                      {message.message === '' ? <p className="text-sm text-gray-400 italic">Message Deleted</p> : message.message}
                       <p className="text-gray-500 text-xs">{formatHourMinute(message.date)}</p>
                     </div>
                   </div>
