@@ -1,25 +1,39 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const Menu = ({ messageId, onDelete }) => {
+const Menu = ({ messageId, messageText, onEdit, onDelete }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [editedMessage, setEditedMessage] = useState(messageText);
   const menuRef = useRef(null);
+  const editInputRef = useRef(null);
 
   const handleMenuClick = () => {
     setIsMenuOpen(!isMenuOpen);
+    setIsEditOpen(false);
+    if (editInputRef.current) {
+      editInputRef.current.focus();
+    }
   };
 
-  const handleEditClick = () => {
-    console.log('Edit clicked');
-    closeMenu();
+  const handleEditClick = (e) => {
+    e.stopPropagation();
+    setIsEditOpen(!isEditOpen);
+  };
+
+  const handleSaveClick = () => {
+    onEdit(messageId, editedMessage);
+    setIsEditOpen(false);
+    setIsMenuOpen(false);
   };
 
   const handleDeleteClick = () => {
     onDelete(messageId);
-    closeMenu();
+    setIsMenuOpen(false);
   };
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+    setIsEditOpen(false);
   };
 
   useEffect(() => {
@@ -52,6 +66,20 @@ const Menu = ({ messageId, onDelete }) => {
             <button onClick={handleDeleteClick} className="block text-red-500 w-full text-left px-2 py-1 hover:bg-gray-100">
               Delete
             </button>
+            {isEditOpen && (
+              <div className="mt-2">
+                <input
+                  ref={editInputRef}
+                  type="text"
+                  value={editedMessage}
+                  onChange={(e) => setEditedMessage(e.target.value)}
+                  className="block w-14 px-2 py-1 border border-gray-300 rounded"
+                />
+                <button onClick={handleSaveClick} className="mt-2 bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">
+                  Save
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
