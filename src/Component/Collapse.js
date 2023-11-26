@@ -28,7 +28,7 @@ const Collapse = ({ data, children, onDelete, onUpdateTask }) => {
             </p>
           </div>
           <div className="flex items-center gap-4">
-            <p className="text-xs max-w-[300px] text-red-400">{countDay(data.date)}</p>
+            <p className="text-xs min-w-[70px] text-center text-red-400">{countDay(data.date)}</p>
             <p className="text-xs ">{formatDate(data.date)}</p>
             <svg
               className={`w-4 h-4 ${isOpen ? 'transform rotate-180' : ''}`}
