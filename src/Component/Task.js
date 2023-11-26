@@ -100,11 +100,13 @@ const Task = () => {
       {taskList === null ?
         <div>
           <p className="italic text-gray-400 text-xs">No task found</p>
-        </div> : taskList.map((list, index) => (
-          <div key={index}>
-            <Collapse data={list} onDelete={handleDelete} onUpdateTask={handleDataChange} children={<TaskForm onUpdateTask={handleDataChange} data={taskList} dataList={list} />} />
-          </div>
-        ))}
+        </div> : taskList
+          .filter((item) => !taskType || item.type === taskType)
+          .map((list, index) => (
+            <div key={index}>
+              <Collapse data={list} onDelete={handleDelete} onUpdateTask={handleDataChange} children={<TaskForm onUpdateTask={handleDataChange} data={taskList} dataList={list} />} />
+            </div>
+          ))}
     </>
   );
 };
