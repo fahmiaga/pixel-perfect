@@ -20,7 +20,6 @@ const TaskForm = ({ dataList, onUpdateTask }) => {
     setIsFormOpen(false)
   }
 
-  console.log(desc)
   return (
     <>
       <div className="ml-10">

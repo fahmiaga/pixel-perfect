@@ -2,23 +2,30 @@ import React, { useState } from 'react';
 import MenuTask from "./MenuTask";
 import { countDay, formatDate } from "../utils/util";
 
-const Collapse = ({ data, children }) => {
+const Collapse = ({ data, children, onDelete, onUpdateTask }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [complete, setComplete] = useState('');
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleComplete = (e) => {
+    const newValue = e.target.checked
+    onUpdateTask(data.id, { completed: newValue })
+    setComplete(newValue)
+  }
+
   return (
     <div className="mb-4">
       <div className="flex items-center justify-between p-2" >
 
+        <input type="checkbox" name="completed" checked={data.completed} onChange={(e) => handleComplete(e)} />
         <div className="cursor-pointer flex gap-8" onClick={handleToggle}>
           <div className="flex items-center gap-4">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 28 28" fill="none">
-              <path fillRule="evenodd" clipRule="evenodd" d="M3.54391 0.526306H24.6667C26.3264 0.526306 27.6843 1.8842 27.6843 3.54385V24.6667C27.6843 26.3263 26.3264 27.6842 24.6667 27.6842H3.54391C1.88426 27.6842 0.526367 26.3263 0.526367 24.6667V3.54385C0.526367 1.8842 1.88426 0.526306 3.54391 0.526306ZM24.6667 24.6667V3.54385H3.54391V24.6667H24.6667Z" fill="#BDBDBD" />
-            </svg>
-            <p className="text-xs font-semibold min-w-[230px]">{data.title}</p>
+            <p className="text-xs font-semibold max-w-[230px] min-w-[230px] ">
+              {data.completed ? <del>{data.title}</del> : data.title}
+            </p>
           </div>
           <div className="flex items-center gap-4">
             <p className="text-xs max-w-[300px] text-red-400">{countDay(data.date)}</p>
@@ -35,7 +42,7 @@ const Collapse = ({ data, children }) => {
           </div>
         </div>
         <div className="mb-3">
-          <MenuTask />
+          <MenuTask id={data.id} onDelete={onDelete} />
         </div>
       </div>
       <div

@@ -41,6 +41,7 @@ const Task = () => {
         type: taskType,
         date: currentDate.toLocaleDateString(),
         description: '',
+        completed: false
       };
       const storedToDoList = localStorage.getItem('toDoList');
       if (!storedToDoList) {
@@ -58,6 +59,13 @@ const Task = () => {
     }
   };
 
+  const handleDelete = (taskId) => {
+    const updatedTaskList = taskList.filter((task) => task.id !== taskId);
+
+    localStorage.setItem('toDoList', JSON.stringify(updatedTaskList));
+
+    setToDoList(updatedTaskList);
+  };
 
   return (
     <>
@@ -94,7 +102,7 @@ const Task = () => {
           <p className="italic text-gray-400 text-xs">No task found</p>
         </div> : taskList.map((list, index) => (
           <div key={index}>
-            <Collapse data={list} children={<TaskForm onUpdateTask={handleDataChange} data={taskList} dataList={list} />} />
+            <Collapse data={list} onDelete={handleDelete} onUpdateTask={handleDataChange} children={<TaskForm onUpdateTask={handleDataChange} data={taskList} dataList={list} />} />
           </div>
         ))}
     </>

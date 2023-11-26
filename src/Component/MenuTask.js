@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const MenuTask = ({ messageId, onDelete }) => {
+const MenuTask = ({ id, onDelete }) => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
@@ -11,7 +11,7 @@ const MenuTask = ({ messageId, onDelete }) => {
   };
 
   const handleDeleteClick = () => {
-    onDelete(messageId);
+    onDelete(id);
     setIsMenuOpen(false);
   };
 
