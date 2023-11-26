@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Submit from "./Submit";
 import Select from "./Select";
 import Collapse from "./Collapse";
@@ -10,6 +10,17 @@ const Task = () => {
   const [taskType, setTaskType] = useState('');
   const [toDoList, setToDoList] = useState([]);
   const taskList = JSON.parse(localStorage.getItem('toDoList'))
+
+  const handleDateChange = (taskId, newDate) => {
+    const updatedTaskList = taskList.map((task) =>
+      task.id === taskId ? { ...task, date: newDate } : task
+    );
+
+    localStorage.setItem('toDoList', JSON.stringify(updatedTaskList));
+
+    setToDoList(updatedTaskList);
+  };
+
 
   const handleMenuClick = () => {
     setFormOpen(!formOpen);
@@ -23,10 +34,12 @@ const Task = () => {
   const handleTaskSubmit = () => {
     if (taskTitle.trim() !== '' && taskType.trim() !== '') {
       const currentDate = new Date();
+      let id = (Math.random() + 1).toString(36).substring(7);
       const newTask = {
+        id: id,
         title: taskTitle,
         type: taskType,
-        date: currentDate.toISOString(),
+        date: currentDate.toLocaleDateString(),
         description: '',
       };
       const storedToDoList = localStorage.getItem('toDoList');
@@ -45,8 +58,7 @@ const Task = () => {
     }
   };
 
-  console.log(toDoList)
-  console.log(taskList)
+
   return (
     <>
       <div className="flex justify-between mb-4 relative">
@@ -82,7 +94,7 @@ const Task = () => {
           <p className="italic text-gray-400 text-xs">No task found</p>
         </div> : taskList.map((list, index) => (
           <div key={index}>
-            <Collapse data={list} children={<TaskForm />} />
+            <Collapse data={list} children={<TaskForm onUpdateTaskDate={handleDateChange} data={taskList} dataList={list} />} />
           </div>
         ))}
     </>

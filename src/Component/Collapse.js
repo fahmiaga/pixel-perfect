@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import MenuTask from "./MenuTask";
+import { countDay, formatDate } from "../utils/util";
 
 const Collapse = ({ data, children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,8 +21,8 @@ const Collapse = ({ data, children }) => {
             <p className="text-xs font-semibold min-w-[230px]">{data.title}</p>
           </div>
           <div className="flex items-center gap-4">
-            <p className="text-xs max-w-[300px] text-red-400">4 days left</p>
-            <p className="text-xs ">12/06/2021</p>
+            <p className="text-xs max-w-[300px] text-red-400">{countDay(data.date)}</p>
+            <p className="text-xs ">{formatDate(data.date)}</p>
             <svg
               className={`w-4 h-4 ${isOpen ? 'transform rotate-180' : ''}`}
               fill="none"
