@@ -11,9 +11,9 @@ const Task = () => {
   const [toDoList, setToDoList] = useState([]);
   const taskList = JSON.parse(localStorage.getItem('toDoList'))
 
-  const handleDateChange = (taskId, newDate) => {
+  const handleDataChange = (taskId, newData) => {
     const updatedTaskList = taskList.map((task) =>
-      task.id === taskId ? { ...task, date: newDate } : task
+      task.id === taskId ? { ...task, ...newData } : task
     );
 
     localStorage.setItem('toDoList', JSON.stringify(updatedTaskList));
@@ -94,7 +94,7 @@ const Task = () => {
           <p className="italic text-gray-400 text-xs">No task found</p>
         </div> : taskList.map((list, index) => (
           <div key={index}>
-            <Collapse data={list} children={<TaskForm onUpdateTaskDate={handleDateChange} data={taskList} dataList={list} />} />
+            <Collapse data={list} children={<TaskForm onUpdateTask={handleDataChange} data={taskList} dataList={list} />} />
           </div>
         ))}
     </>

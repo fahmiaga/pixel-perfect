@@ -40,8 +40,6 @@ export const countDay = (inputDate) => {
   const timeDifference = selectedDate.getTime() - currentDate.getTime();
   const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
 
-  console.log(timeDifference, daysDifference)
-
   let formattedDate;
   if (daysDifference === 0) {
     formattedDate = 'today';
