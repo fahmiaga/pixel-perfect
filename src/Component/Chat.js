@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Submit from "./Submit"
 import TextInput from "./TextInput"
 import fetchData from "../store/data"
@@ -12,6 +12,17 @@ const Chat = ({ data, onClose }) => {
   const handleClick = () => {
     onClose();
   }
+  const messagesEndRef = useRef(null);
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatData]);
 
   useEffect(() => {
     const fetchDataAndSetState = async () => {
@@ -128,7 +139,7 @@ const Chat = ({ data, onClose }) => {
           {chatData.messages.map((message, index) => (
             <div>
               {index === 0 || new Date(message.date).toDateString() !== new Date(chatData.messages[index - 1].date).toDateString() ? (
-                <div className="w-full relative z-10">
+                <div className="w-full relative z-10" key={index}>
                   <div className="w-full flex justify-center">
                     <p className="text-center mt-5 text-gray-900 w-[200px] bg-white">
                       {new Date(message.date).toDateString() === new Date().toDateString()
@@ -155,6 +166,7 @@ const Chat = ({ data, onClose }) => {
               </div>
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </div>}
 
         <div className="flex gap-3 px-3 fixed bottom-8 w-[537px]">

@@ -9,6 +9,8 @@ const Task = () => {
   const [taskTitle, setTaskTitle] = useState('');
   const [taskType, setTaskType] = useState('');
   const [toDoList, setToDoList] = useState([]);
+  const [taskTitleError, setTaskTitleError] = useState(false);
+
   const taskList = JSON.parse(localStorage.getItem('toDoList'))
 
   const handleDataChange = (taskId, newData) => {
@@ -32,32 +34,37 @@ const Task = () => {
   ];
 
   const handleTaskSubmit = () => {
-    if (taskTitle.trim() !== '' && taskType.trim() !== '') {
-      const currentDate = new Date();
-      let id = (Math.random() + 1).toString(36).substring(7);
-      const newTask = {
-        id: id,
-        title: taskTitle,
-        type: taskType,
-        date: currentDate.toLocaleDateString(),
-        description: '',
-        completed: false
-      };
-      const storedToDoList = localStorage.getItem('toDoList');
-      if (!storedToDoList) {
-        localStorage.setItem('toDoList', JSON.stringify([newTask]));
-      } else {
-        const parsedToDoList = JSON.parse(storedToDoList);
-        parsedToDoList.push(newTask);
-        localStorage.setItem('toDoList', JSON.stringify(parsedToDoList));
-      }
+    const isTitleEmpty = taskTitle.trim() === '';
 
-      setToDoList(prevToDoList => [...prevToDoList, newTask]);
-      setFormOpen(false);
-      setTaskTitle('');
-      setTaskType('');
+    setTaskTitleError(isTitleEmpty);
+
+    if (isTitleEmpty) return;
+
+    const currentDate = new Date();
+    let id = (Math.random() + 1).toString(36).substring(7);
+    const newTask = {
+      id: id,
+      title: taskTitle,
+      type: taskType,
+      date: currentDate.toLocaleDateString(),
+      description: '',
+      completed: false
+    };
+    const storedToDoList = localStorage.getItem('toDoList');
+    if (!storedToDoList) {
+      localStorage.setItem('toDoList', JSON.stringify([newTask]));
+    } else {
+      const parsedToDoList = JSON.parse(storedToDoList);
+      parsedToDoList.push(newTask);
+      localStorage.setItem('toDoList', JSON.stringify(parsedToDoList));
     }
+
+    setToDoList(prevToDoList => [...prevToDoList, newTask]);
+    setFormOpen(false);
+    setTaskTitle('');
+    setTaskTitleError(false);
   };
+
 
   const handleDelete = (taskId) => {
     const updatedTaskList = taskList.filter((task) => task.id !== taskId);
@@ -84,8 +91,10 @@ const Task = () => {
               className="border rounded-sm pl-2 mb-2 w-full"
               placeholder="Task title"
               value={taskTitle}
+              required
               onChange={(e) => setTaskTitle(e.target.value)}
             />
+            {taskTitleError && <p className="text-xs text-red-500">Task title is required</p>}
             <Select
               taskType={taskTypeOptions}
               onChange={(e) => setTaskType(e.target.value)}

@@ -15,7 +15,6 @@ const Message = () => {
       try {
         const timeout = setTimeout(async () => {
           const data = await updateChatData();
-
           if (data) {
             setChatData(data);
             setFilteredChatData(data);

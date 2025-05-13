@@ -7,6 +7,7 @@ const TextInput = ({ name, placeholder, value, onChange, onKeyPress }) => {
         name={name}
         placeholder={placeholder}
         value={value}
+        autoComplete="off"
         onChange={onChange}
         onKeyDown={onKeyPress}
         className="border-2 border-gray-400 w-full rounded-md"

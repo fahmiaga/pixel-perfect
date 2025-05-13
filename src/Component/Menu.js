@@ -67,14 +67,13 @@ const Menu = ({ messageId, messageText, onEdit, onDelete }) => {
               Delete
             </button>
             {isEditOpen && (
-              <div className="mt-2">
-                <input
-                  ref={editInputRef}
+              <div className="mt-2 min-w-[200px]">
+                <textarea ref={editInputRef}
                   type="text"
                   value={editedMessage}
                   onChange={(e) => setEditedMessage(e.target.value)}
-                  className="block w-14 px-2 py-1 border border-gray-300 rounded"
-                />
+                  className="block w-full px-2 py-1 border border-gray-300 rounded">
+                </textarea>
                 <button onClick={handleSaveClick} className="mt-2 bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">
                   Save
                 </button>

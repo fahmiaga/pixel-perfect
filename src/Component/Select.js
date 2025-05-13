@@ -6,7 +6,6 @@ const Select = ({ taskType, onChange }) => {
       <fieldset>
         <div className="relative border border-gray-300 text-gray-800 bg-white shadow-lg w-44">
           <select className="appearance-none w-full py-1 px-2 bg-white" name="whatever" id="frm-whatever" onChange={onChange}>
-            <option>Select Task</option>
             {taskType.map((type, index) => (
               <option key={index} value={type.value}>{type.title}</option>
             ))}

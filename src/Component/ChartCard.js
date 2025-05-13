@@ -4,9 +4,17 @@ import { formatISODate } from '../utils/util';
 import Chat from "./Chat";
 
 const ChartCard = ({ data }) => {
-  const newMessage = data.messages.length - 1
-  const newestMessage = data.messages[newMessage]
-  const [isOpen, setIsOpen] = useState(false)
+  // const newData = JSON.parse(localStorage.getItem(`chatData_${data.id}`))
+
+  // const newMessage = newData.messages.length - 1
+  // const newestMessage = newData.messages[newMessage]
+  // const [isOpen, setIsOpen] = useState(false)
+  const localData = localStorage.getItem(`chatData_${data.id}`);
+  const newData = localData ? JSON.parse(localData) : data;
+
+  const newMessage = newData.messages.length - 1;
+  const newestMessage = newData.messages[newMessage];
+  const [isOpen, setIsOpen] = useState(false);
   const handleClick = () => {
     setIsOpen(true)
   };
