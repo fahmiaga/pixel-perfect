@@ -7,12 +7,11 @@ import TaskForm from "./TaskForm";
 const Task = () => {
   const [formOpen, setFormOpen] = useState(false);
   const [taskTitle, setTaskTitle] = useState('');
-  const [taskType, setTaskType] = useState('');
+  const [taskType, setTaskType] = useState('personal');
   const [toDoList, setToDoList] = useState([]);
   const [taskTitleError, setTaskTitleError] = useState(false);
 
   const taskTypeOptions = [
-    { title: 'All', value: '' },
     { title: 'Personal Errands', value: 'personal' },
     { title: 'Urgent To-Do', value: 'urgent' }
   ];
