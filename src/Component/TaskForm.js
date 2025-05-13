@@ -3,12 +3,10 @@ import Submit from "./Submit";
 
 const TaskForm = ({ dataList, onUpdateTask }) => {
   const [desc, setDesc] = useState('');
-  const [taskDate, setTaskDate] = useState('');
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const handleDateChange = (e) => {
     const newDate = e.target.value;
-    setTaskDate(newDate);
     onUpdateTask(dataList.id, { date: newDate });
   };
 

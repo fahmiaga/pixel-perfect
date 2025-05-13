@@ -4,7 +4,7 @@ import { countDay, formatDate } from "../utils/util";
 
 const Collapse = ({ data, children, onDelete, onUpdateTask }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [complete, setComplete] = useState('');
+  // const [complete, setComplete] = useState('');
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -13,7 +13,7 @@ const Collapse = ({ data, children, onDelete, onUpdateTask }) => {
   const handleComplete = (e) => {
     const newValue = e.target.checked
     onUpdateTask(data.id, { completed: newValue })
-    setComplete(newValue)
+    // setComplete(newValue)
   }
 
   return (

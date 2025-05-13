@@ -11,67 +11,62 @@ const Task = () => {
   const [toDoList, setToDoList] = useState([]);
   const [taskTitleError, setTaskTitleError] = useState(false);
 
-  const taskList = JSON.parse(localStorage.getItem('toDoList'))
+  const taskTypeOptions = [
+    { title: 'All', value: '' },
+    { title: 'Personal Errands', value: 'personal' },
+    { title: 'Urgent To-Do', value: 'urgent' }
+  ];
 
-  const handleDataChange = (taskId, newData) => {
-    const updatedTaskList = taskList.map((task) =>
-      task.id === taskId ? { ...task, ...newData } : task
-    );
-
-    localStorage.setItem('toDoList', JSON.stringify(updatedTaskList));
-
-    setToDoList(updatedTaskList);
-  };
-
+  useEffect(() => {
+    const storedToDoList = localStorage.getItem('toDoList');
+    if (storedToDoList) {
+      setToDoList(JSON.parse(storedToDoList));
+    }
+  }, []);
 
   const handleMenuClick = () => {
     setFormOpen(!formOpen);
   };
 
-  const taskTypeOptions = [
-    { 'title': 'Personal Errands', 'value': 'urgent' },
-    { 'title': 'Urgent To-Do', 'value': 'personal' }
-  ];
-
   const handleTaskSubmit = () => {
     const isTitleEmpty = taskTitle.trim() === '';
-
     setTaskTitleError(isTitleEmpty);
-
     if (isTitleEmpty) return;
 
     const currentDate = new Date();
-    let id = (Math.random() + 1).toString(36).substring(7);
+    const id = (Math.random() + 1).toString(36).substring(7);
     const newTask = {
-      id: id,
+      id,
       title: taskTitle,
       type: taskType,
       date: currentDate.toLocaleDateString(),
       description: '',
       completed: false
     };
-    const storedToDoList = localStorage.getItem('toDoList');
-    if (!storedToDoList) {
-      localStorage.setItem('toDoList', JSON.stringify([newTask]));
-    } else {
-      const parsedToDoList = JSON.parse(storedToDoList);
-      parsedToDoList.push(newTask);
-      localStorage.setItem('toDoList', JSON.stringify(parsedToDoList));
-    }
 
-    setToDoList(prevToDoList => [...prevToDoList, newTask]);
+    const updatedList = [...toDoList, newTask];
+    setToDoList(updatedList);
+    localStorage.setItem('toDoList', JSON.stringify(updatedList));
+
+    // Reset form
     setFormOpen(false);
     setTaskTitle('');
+    setTaskType('');
     setTaskTitleError(false);
   };
 
-
   const handleDelete = (taskId) => {
-    const updatedTaskList = taskList.filter((task) => task.id !== taskId);
-
-    localStorage.setItem('toDoList', JSON.stringify(updatedTaskList));
-
+    const updatedTaskList = toDoList.filter((task) => task.id !== taskId);
     setToDoList(updatedTaskList);
+    localStorage.setItem('toDoList', JSON.stringify(updatedTaskList));
+  };
+
+  const handleDataChange = (taskId, newData) => {
+    const updatedTaskList = toDoList.map((task) =>
+      task.id === taskId ? { ...task, ...newData } : task
+    );
+    setToDoList(updatedTaskList);
+    localStorage.setItem('toDoList', JSON.stringify(updatedTaskList));
   };
 
   return (
@@ -91,10 +86,11 @@ const Task = () => {
               className="border rounded-sm pl-2 mb-2 w-full"
               placeholder="Task title"
               value={taskTitle}
-              required
               onChange={(e) => setTaskTitle(e.target.value)}
             />
-            {taskTitleError && <p className="text-xs text-red-500">Task title is required</p>}
+            {taskTitleError && (
+              <p className="text-xs text-red-500">Task title is required</p>
+            )}
             <Select
               taskType={taskTypeOptions}
               onChange={(e) => setTaskType(e.target.value)}
@@ -106,16 +102,28 @@ const Task = () => {
           </div>
         )}
       </div>
-      {taskList === null ?
-        <div>
-          <p className="italic text-gray-400 text-xs">No task found</p>
-        </div> : taskList
+
+      {toDoList.length === 0 ? (
+        <p className="italic text-gray-400 text-xs">No task found</p>
+      ) : (
+        toDoList
           .filter((item) => !taskType || item.type === taskType)
-          .map((list, index) => (
-            <div key={index}>
-              <Collapse data={list} onDelete={handleDelete} onUpdateTask={handleDataChange} children={<TaskForm onUpdateTask={handleDataChange} data={taskList} dataList={list} />} />
+          .map((list) => (
+            <div key={list.id}>
+              <Collapse
+                data={list}
+                onDelete={handleDelete}
+                onUpdateTask={handleDataChange}
+              >
+                <TaskForm
+                  onUpdateTask={handleDataChange}
+                  data={toDoList}
+                  dataList={list}
+                />
+              </Collapse>
             </div>
-          ))}
+          ))
+      )}
     </>
   );
 };
